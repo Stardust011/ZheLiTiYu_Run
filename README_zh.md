@@ -1,23 +1,23 @@
 # Zhejitiyu_Run
 用于刷取浙理体育公里数
 
-## Install
-This project uses [requests].
+## 安装
+此项目使用[requests]库.
 ```sh
 $ pip install -r requirements.txt
 ```
 
-## Run
- First, you need to generate your own running path file.
+## 运行
+ 首先，您需要生成自己的运行路径文件。
 ```sh
 $ python gpswr.py
 ```
- Then start the upload.
+ 然后，启动上传。
 ```sh
 $ python updata.py
 ```
 
-## Change Log
+## 历史版本
 ### v0.1
 * 抓包及上传接口测试
 
@@ -34,10 +34,10 @@ $ python updata.py
 ### v1.3
 * 现在只需要学号就可以上传
 
-## Maintainers
+## 主维护者
 
 [@Stardust011](https://github.com/Stardust011).
 
-## License
+## 开源协议
 
 [MIT](LICENSE) © Richard Littauer
