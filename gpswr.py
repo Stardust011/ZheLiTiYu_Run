@@ -1,8 +1,6 @@
+# coding:utf-8
 import random
-from types import ClassMethodDescriptorType
 from typing import cast
-import geopy
-import os
 import webbrowser
 from geopy import distance
 
