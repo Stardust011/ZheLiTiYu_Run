@@ -34,6 +34,9 @@ $ python updata.py
 ### v1.3
 * 现在只需要学号就可以上传
 
+#### v1.3.1
+* 增加了查询接口
+
 ## 主维护者
 
 [@Stardust011](https://github.com/Stardust011).
