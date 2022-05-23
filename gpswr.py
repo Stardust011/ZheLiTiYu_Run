@@ -1,6 +1,5 @@
 # coding:utf-8
 import random
-from typing import cast
 import webbrowser
 from geopy import distance
 
