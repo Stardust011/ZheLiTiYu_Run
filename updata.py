@@ -4,7 +4,21 @@ import hashlib
 import random
 import time
 import requests
+import math
 from geopy import distance
+# import base64
+# from Crypto.Hash import SHA512
+# from Crypto.PublicKey import RSA
+# from Crypto.Signature import PKCS1_v1_5
+
+# import pyotp
+
+# totp = pyotp.totp.TOTP('vUwNiE3cxh4tiwRl74ly')
+# if not totp.verify(input('请输入动态验证码:')):
+#     print('错误')
+#     print('请联系管理员')
+#     print('EMAIL:lin.stardusts@gmail.com')
+#     exit(0)
 
 dis = 0  # distance
 t = 0  # all time
@@ -19,6 +33,15 @@ lonf = []
 studentno = ''
 uid = ''
 
+# def to_verify_with_public_key(signature, plain_text):
+#     with open('rsa-pub.pem', 'r') as f:
+#         public_key = f.read()
+#     #公钥验签
+#     verifier = PKCS1_v1_5.new(RSA.importKey(public_key))
+#     _rand_hash = SHA512.new()
+#     _rand_hash.update(plain_text.encode())
+#     verify = verifier.verify(_rand_hash, signature)
+#     return verify #true / false
 
 def betime():
     global nt
@@ -26,6 +49,7 @@ def betime():
     ts = []
     print('e.g. 2022,2,17,17,3,38')
     t = input('time:')
+    # t == ''
     if t == '':
         nt = int(time.time())
     else:
@@ -50,10 +74,17 @@ def gps():
     line = f.readline()
     l = []
     cc = 0
+    Pi = math.pi * 3000.0 / 180.0
     while line:
         l = line.split(' ')
-        lonf.append(float(l[0]) + random.uniform(-0.00000500, 0.00000500) - 0.0065)  # bd坐标系偏移
-        latf.append(float(l[1]) + random.uniform(-0.00000500, 0.00000500) - 0.0060)
+        # 开始处理bd坐标系偏移问题 bd09 --> GCJ02
+        x = float(l[0]) + random.uniform(-0.00000500, 0.00000500) - 0.0065
+        y = float(l[1]) + random.uniform(-0.00000500, 0.00000500) - 0.0060
+        z = math.sqrt(pow(x, 2) + pow(y, 2)) - 0.00002 * math.sin(y * Pi)
+        theta = math.atan2(y, x) - 0.000003 * math.cos(x * Pi)
+        lonf.append(z * math.cos(theta))  
+        latf.append(z * math.sin(theta))
+        # 偏移完成
         line = f.readline()
         cc = cc + 1
     i = 1
@@ -155,10 +186,21 @@ def getuid():
     return 1
 
 if __name__ == '__main__':
+    # with open('gps.txt', 'r', encoding='utf-8') as f:
+    #     text = f.read()
+    # with open('updata.py.sig', 'r') as f:
+    #     signature = f.read()
+    # signature = base64.b64decode(signature)
+    # assert to_verify_with_public_key(signature, text)
+    # if int(time.time()) > 1671119999:
+    #     print('时间到了，不再运行')
+    #     input()
+    #     exit()
+
     getuid()
     betime()
-    print('次数:')
-    times = int(input())
+    print('公里数(3的整倍数):')
+    times = math.ceil(int(input())/3)
     ic = 0
     nt = nt - 86400 * times
     timeArray = time.localtime(nt)
@@ -169,7 +211,7 @@ if __name__ == '__main__':
         crcon()
         post()
         check()
-        nt = nt + 86400 + random.randint(-3600,3600)
+        nt = nt + 86400 + random.randint(-1800,1800)
         timeArray = time.localtime(nt)
         print(time.strftime("%Y-%m-%d %H:%M:%S",timeArray))
         dis = 0
