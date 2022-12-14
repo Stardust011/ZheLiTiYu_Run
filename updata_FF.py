@@ -18,6 +18,7 @@ if not totp.verify(input('请输入动态验证码:')):
     print('错误')
     print('请联系管理员')
     print('EMAIL:lin.stardusts@gmail.com')
+    input()
     exit(0)
 
 dis = 0  # distance
@@ -196,31 +197,38 @@ if __name__ == '__main__':
         print('时间到了，不再运行')
         input()
         exit()
-
-    getuid()
-    betime()
-    print('公里数(3的整倍数):')
-    times = math.ceil(int(input())/3)
-    ic = 0
-    nt = nt - 86400 * times
-    timeArray = time.localtime(nt)
-    print(time.strftime("%Y-%m-%d %H:%M:%S",timeArray))
-    while ic < times:
-        gps()
-        ctime()
-        crcon()
-        post()
-        check()
-        nt = nt + 86400 + random.randint(-1800,1800)
+    try:
+        getuid()
+        betime()
+        print('公里数(3的整倍数,如120):')
+        times = math.ceil(int(input())/3)
+        ic = 0
+        nt = nt - 86400 * times
         timeArray = time.localtime(nt)
         print(time.strftime("%Y-%m-%d %H:%M:%S",timeArray))
-        dis = 0
-        t = 0  # all time
-        tc = []
-        cc = 0  # steps count
-        content = {}
-        lon = []
-        lat = []
-        latf = []
-        lonf = []
-        ic = ic + 1
+        while ic < times:
+            gps()
+            ctime()
+            crcon()
+            try:
+                post()
+                check()
+            except:
+                print("请确认已连接校园网")
+                input()
+            nt = nt + 86400 + random.randint(-1800,1800)
+            timeArray = time.localtime(nt)
+            print(time.strftime("%Y-%m-%d %H:%M:%S",timeArray))
+            dis = 0
+            t = 0  # all time
+            tc = []
+            cc = 0  # steps count
+            content = {}
+            lon = []
+            lat = []
+            latf = []
+            lonf = []
+            ic = ic + 1
+    except:
+        print("出现错误，请检测输入")
+        input()
