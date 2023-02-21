@@ -1,6 +1,10 @@
 # Zhejitiyu_Run
 用于刷取浙理体育公里数
 
+---
+# <font color='red'>由于软件不再使用，此项目不再维护</font>
+---
+
 ## Install
 This project uses [requests].
 ```sh
